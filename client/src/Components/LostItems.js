@@ -63,11 +63,13 @@ export default function LostItems() {
   useEffect(() => {
     
     Axios({
-      url: "http://localhost:4000/items",
+      //url: "http://localhost:4000/items",
+      url: `${process.env.REACT_APP_API_URL}/items`,
       method: "GET",
     })
       .then((response) => {      
-      const allitems = response.data.items.reverse();
+      //const allitems = response.data.items.reverse();
+      const allitems = (response.data.items || []).reverse();
       const itemsPerPage = 9;
       const numItems = allitems.length;
       setMaxPages(Math.ceil(numItems / itemsPerPage));

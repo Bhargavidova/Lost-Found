@@ -135,7 +135,7 @@ const Home = () => {
                         About Us
                     </Typography>
                     <Typography color="#FEF0E9">
-                    We want to be a platform trough which our users can find those items that are so important to them. 
+                    We want to be a platform through which our users can find those items that are so important to them. 
                     <br />
                     We want users to be able to publish their lost item or if they find one, help them find their owner!
                     </Typography>

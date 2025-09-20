@@ -6,13 +6,11 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
-
 import userRoutes from './routes/userRoutes.js'
 import ItemRoutes from './routes/ItemRoutes.js'
 
-
 const app = express()
-dotenv.config();
+dotenv.config()
 app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
@@ -34,14 +32,17 @@ app.use((_req, res, next) => {
     next()
 })
 
-
 app.use('/users', userRoutes)
-
 app.use('/Items', ItemRoutes)
 
+const port = process.env.PORT || 4000
+const db = process.env.MONGO_URI // Changed from process.env.DB to process.env.MONGO_URI
 
-const port = process.env.PORT || 4000;
-const db = process.env.DB;
+if (!db) {
+    console.error('MongoDB connection string is not defined. Please set MONGO_URI in your .env file.')
+    process.exit(1)
+}
 
-mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => app.listen(port,() => console.log('Connection done and running on PORT :'+ port))).catch((err) => console.log(err.message));
-
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(port, () => console.log('Connection done and running on PORT :' + port)))
+    .catch((err) => console.log(err.message))

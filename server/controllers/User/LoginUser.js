@@ -4,8 +4,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config();
 
-const secretKey = process.env.SECRET_KEY
-
+const secretKey = process.env.JWT_SECRET // <-- FIXED
 
 const generateJWT = async (id) => {
     const token = jwt.sign({ id }, secretKey, {
@@ -33,12 +32,11 @@ export const loginUser = async (req, res) => {
             })
         }
 
-
         const token = await generateJWT(user.id)
 
         return res.status(200).json({
             ok: true,
-            user:user,
+            user: user,
             msg: 'User Logged',
             token,
             id: user._id,

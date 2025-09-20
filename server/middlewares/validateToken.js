@@ -1,32 +1,19 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-dotenv.config();
+dotenv.config()
 
-const secretKey = process.env.SECRET_KEY
+const secretKey = process.env.JWT_SECRET
 
-export const validateJWT = async (req, res, next) => {
-
-    const token = req.header('token')
-
+export const validateJWT = (req, res, next) => {
+    const token = req.headers.token
+    if (!token) {
+        return res.status(401).json({ ok: false, msg: 'No token provided' })
+    }
     try {
-        if (!token) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'Access denied',
-            })
-        }
-
-        const payload = jwt.verify(token, secretKey)
-
-        req.id = payload.id
-        return next()
-    } catch (error) {
-        console.log(error)
-        return res.status(200).json({
-            ok: false,
-            msg: 'Token not valid',
-        })
+        const decoded = jwt.verify(token, secretKey)
+        req.user = decoded
+        next()
+    } catch (err) {
+        return res.status(401).json({ ok: false, msg: 'Invalid token' })
     }
 }
-
-export default validateJWT;

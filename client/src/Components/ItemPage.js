@@ -52,7 +52,8 @@ function ItemPage() {
   
   useEffect(() => {
     axios({
-      url: `http://localhost:4000/items/${item_id}`,
+      //url: `http://localhost:4000/items/${item_id}`,
+      url: `${process.env.REACT_APP_API_URL}/items/${item_id}`,
       method: "GET",
     })
       .then((response) => {

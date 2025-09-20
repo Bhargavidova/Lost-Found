@@ -2,9 +2,9 @@ import User from '../../models/User.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-dotenv.config();
+dotenv.config()
 
-const secretKey = process.env.SECRET_KEY
+const secretKey = process.env.JWT_SECRET // Use the correct env variable
 
 const generateJWT = async (id) => {
     const token = jwt.sign({ id }, secretKey, {
@@ -13,19 +13,8 @@ const generateJWT = async (id) => {
     return token
 }
 
-
-const createUser = async (req,res) => {
+const createUser = async (req, res) => {
     const userData = req.body
-
-    const data = {
-        members: [
-            {
-                email_address: userData.email,
-            },
-        ],
-    }
-
-    const postData = JSON.stringify(data)
 
     try {
         const findUser = await User.findOne({ email: userData.email })
@@ -38,22 +27,30 @@ const createUser = async (req,res) => {
 
         const newUser = new User(userData)
 
-        //Encrypt password
+        // Encrypt password
         const salt = bcrypt.genSaltSync()
         newUser.password = bcrypt.hashSync(newUser.password, salt)
 
-        //Generate JWT
+        // Generate JWT
         const token = await generateJWT(newUser.id)
 
         await newUser.save()
 
-
-        res.send("Done");
+        res.status(201).json({
+            ok: true,
+            msg: 'User created successfully',
+            token,
+            user: {
+                id: newUser.id,
+                email: newUser.email,
+                name: newUser.name
+            }
+        })
     } catch (error) {
         console.log(error)
-        return res.status(404).json({
+        return res.status(500).json({
             ok: false,
-            msg: 'An error occured, contact an administrator',
+            msg: 'An error occurred, contact an administrator',
         })
     }
 }

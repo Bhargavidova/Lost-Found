@@ -25,7 +25,7 @@ const Footer = () => {
                         color="white"
                         alignSelf="center"
                     >
-                        © 2023 All Rights Reserved
+                        © 2025 All Rights Reserved
                     </Typography>
 
                     <Stack
@@ -46,7 +46,7 @@ const Footer = () => {
                     </Stack>
                 </Stack>
                 <Link
-                    href="https://github.com/KcMelek/Lost-Found-MERN"
+                    href="https://github.com/Bhargavidova/Lost-Found"
                     target="_blank"
                     sx={{
                         fontSize: '12px',

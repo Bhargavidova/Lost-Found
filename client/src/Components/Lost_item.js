@@ -140,7 +140,8 @@ const LostItem = () => {
     Promise.all(promises)
       .then((urls) => {
         const newItem = { ...values, img: urls };
-            axios.post('http://localhost:4000/Items/newItem', newItem, config)
+            axios.post(`${process.env.REACT_APP_API_URL}/Items/newItem`, newItem, config)
+            //axios.post('http://localhost:4000/Items/newItem', newItem, config)
             .then(() => {
             toast.success('Wohoo 🤩! Item listed successfully.', {
               position: "bottom-right",
